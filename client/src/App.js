@@ -1,19 +1,12 @@
 import "./App.css";
-import { userState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Axios from "axios";
 
 function App() {
-  const [ListOfUsers, setListOfUSers] = useState([
-    // {
-    //   id: 1,
-    //   name: "goh",
-    //   age: 20,
-    //   username: "goh",
-    // },
-  ]);
+  const [listOfUsers, setListOfUsers] = useState([]);
   const [name, setName] = useState("");
   const [age, setAge] = useState(0);
-  const [username, setUserame] = useState("");
+  const [username, setUsername] = useState("");
 
   useEffect(() => {
     Axios.get("http://localhost:3001/getUsers").then((response) => {
@@ -22,18 +15,13 @@ function App() {
   }, []);
 
   const createUser = () => {
-    Axios.get("http://localhost:3001/createUser", {
-      // name: name,
-      // age: age,
-      // username: username,
+    Axios.post("http://localhost:3001/createUser", {
       name,
       age,
       username,
     }).then((response) => {
-      alert("USER CREATED");
-      // setListOfUsers(response.data);
       setListOfUsers([
-        ...ListOfUsers,
+        ...listOfUsers,
         {
           name,
           age,
@@ -45,8 +33,8 @@ function App() {
 
   return (
     <div className="App">
-      <div className="userDisplay">
-        {ListOfUsers.map((user) => {
+      <div className="usersDisplay">
+        {listOfUsers.map((user) => {
           return (
             <div>
               <h1>Name: {user.name}</h1>
@@ -56,6 +44,7 @@ function App() {
           );
         })}
       </div>
+
       <div>
         <input
           type="text"
@@ -78,7 +67,7 @@ function App() {
             setUsername(event.target.value);
           }}
         />
-        <button onClick={createUSer}>Create User</button>
+        <button onClick={createUser}> Create User </button>
       </div>
     </div>
   );
